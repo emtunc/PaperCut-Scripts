@@ -10,18 +10,20 @@ This script essentially polls the same API that the real-time activity box on /a
 
 ### How to Use
 
-1. Simply download the dashboard.htm file and put it in your PaperCut install /server/custom/web directory.
+* Simply download the dashboard.htm file and put it in your PaperCut install /server/custom/web directory.
 You can also do this in a few seconds by opening PowerShell as administrator and running the following (assuming the install directory is correct - in my case it's an MF install on the C drive):
 
 ```powershell
 Invoke-WebRequest https://raw.githubusercontent.com/emtunc/PaperCut/master/dashboard.htm -OutFile "C:\Program Files\PaperCut MF\server\custom\web\dashboard.htm"
 ```
 
-2. You'll have to log-in to the admin interface before loading up dashboard.htm as it requires authentication and there currently isn't an easy and secure way to pass-through the authentication in the dashboard.htm page
+* Change the *var url* in the script
+
+* You'll have to log-in to the admin interface before loading up dashboard.htm as it requires authentication and there currently isn't an easy and secure way to pass-through the authentication in the dashboard.htm page
 
 <https://your-papercut-server/admin>
 
-3. Now you can load up the dashboard!
+* Now you can load up the dashboard!
 
 <https://your-papercut-server/custom/dashboard.htm>
 
