@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PaperCut Activity</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- This is the magic -->
+    <script>
+      var http = new XMLHttpRequest();
+      var url = "https://your-papercut-server/rpc/api/rest/internal/dashboard/current_activity";
+      var update = 15000; // Time in milliseconds - Keep an eye on server capacity if you go below 15 seconds
+
+      window.onload = getData();
+
+      setInterval(function() {
+        getData()
+      }, update);
+
+      function getData() {
+        http.onreadystatechange = function() {
+          if (http.readyState == 4 && http.status == 200) {
+            var jsonResp = JSON.parse(http.responseText);
+            addToPage(jsonResp);
+          }
+        };
+        http.open("GET", url, true);
+        http.send();
+      }
+
+      function addToPage(data) {
+        var jsn = JSON.parse(JSON.stringify(data));
+        var arr = jsn.logs;
+        //var out = document.getElementById("notifications").innerHTML;
+        var out = "";
+        var i;
+        for (i = 0; i < arr.length; i++) {
+          if (arr[i].level == "INFO") {
+            out += '<div class="alert alert-info" role="alert"><b>' + arr[i].date + '</b>  ' + arr[i].text + '</div>';
+          }
+          if (arr[i].level == "WARN") {
+            out += '<div class="alert alert-warning" role="alert"><b>' + arr[i].date + '</b>  ' + arr[i].text + '</div>';
+          }
+          if (arr[i].level == "ERROR") {
+            out += '<div class="alert alert-danger" role="alert"><b>' + arr[i].date + '</b>  ' + arr[i].text + '</div>';
+          }
+        }
+        document.getElementById("notifications").innerHTML = out;
+      }
+
+    </script>
+    <!-- End of magic -->
+
+    <!-- Some Style -->
+    <style>
+      /* BACKGROUND COLOUR */
+      html,body{
+        background-color: #272822;
+      }
+      /* TITLE COLOUR */
+      h1{
+        color: #FD971F;
+        text-align: center;
+      }
+      /* TEXT STYLE */
+      .alert {
+        font-size: 20px;
+        color: #272822;
+      }
+      /* INFO BOX */
+      .alert-info {
+        background-color: #66D9EF;
+      }
+      /* WARNING BOX */
+      .alert-warning {
+        background-color: #FD971F;
+      }
+      /* DANGER BOX */
+      .alert-danger {
+        background-color: #F92672;
+      }
+    </style>
+
+  </head>
+  <body>
+    <h1>PaperCut Real-time Activity</h1>
+    <div id="notifications">
+      <!-- dynamically add notifications here -->
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
